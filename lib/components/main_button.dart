@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertodo/constants.dart';
 
 class MainButton extends StatelessWidget {
   final String title;
@@ -10,7 +11,7 @@ class MainButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return RaisedButton(
       textColor: Colors.white,
-      color: Color.fromRGBO(36, 187, 234, 1),
+      color: kMainBlueColor,
       highlightColor: Color.fromRGBO(36, 187, 234, 0.2),
       child: Padding(
         padding: const EdgeInsets.all(10.0),

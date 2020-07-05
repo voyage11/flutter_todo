@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+//import 'package:flutter/rendering.dart';
+import 'package:fluttertodo/constants.dart';
 import 'package:fluttertodo/components/main_button.dart';
 import 'package:fluttertodo/screens/login_screen.dart';
 import 'package:fluttertodo/screens/signup_screen.dart';
@@ -15,31 +16,48 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome Screen'),
+        backgroundColor: kMainBlueColor,
       ),
       body: Container(
         margin: EdgeInsets.all(16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            MainButton(
-              title: 'Login',
-              onPressed: () {
-                Navigator.pushNamed(context, LoginScreen.id);
-              },
+            Container(
+              margin: EdgeInsets.only(top: 90),
+              child: Center(
+                child: Text(
+                  'Your Logo',
+                  style: TextStyle(
+                    fontSize: 45,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            MainButton(
-              title: 'Signup',
-              onPressed: () {
-                Navigator.pushNamed(context, SignupScreen.id);
-              },
-            ),
-            SizedBox(
-              height: 16,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                MainButton(
+                  title: 'Login',
+                  onPressed: () {
+                    Navigator.pushNamed(context, LoginScreen.id);
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                MainButton(
+                  title: 'Signup',
+                  onPressed: () {
+                    Navigator.pushNamed(context, SignupScreen.id);
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+              ],
             ),
           ],
         ),
