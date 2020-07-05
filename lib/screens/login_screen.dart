@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertodo/constants.dart';
 import 'package:fluttertodo/components/main_button.dart';
+import 'package:fluttertodo/mixins/app_message.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget with AppMessage {
   static const String id = 'login_screen';
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -72,5 +73,11 @@ class _LoginScreenState extends State<LoginScreen> {
   void login() {
     print('Email: ${_emailController.text}');
     print('Password: ${_passwordController.text}');
+//    AppMessage.show(
+//      context: context,
+//      title: 'Error',
+//      description: 'This is error.',
+//      type: MessageType.error,
+//    );
   }
 }
