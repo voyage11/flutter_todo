@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:fluttertodo/constants.dart';
 import 'package:fluttertodo/components/main_button.dart';
 import 'package:fluttertodo/mixins/app_message.dart';
 import 'package:fluttertodo/screens/todo_screen.dart';
+import 'package:fluttertodo/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget with AppMessage {
   static const String id = 'login_screen';
@@ -15,9 +21,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  //final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   void dispose() {
-    // TODO: implement dispose
     print('LoginScreen dispose');
     super.dispose();
   }
@@ -85,9 +93,34 @@ class _LoginScreenState extends State<LoginScreen> {
 //        .currentUser
 //        .setEmailUid('email', 'uid');
 
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => TodoScreen()),
-      (route) => false,
-    );
+    if (_emailController.text == '') {
+      AppMessage.show(
+          context: context,
+          title: 'Error',
+          description: 'Please enter an email.',
+          type: MessageType.error);
+    } else if (_passwordController.text == '') {
+      AppMessage.show(
+          context: context,
+          title: 'Error',
+          description: 'Please enter a password.',
+          type: MessageType.error);
+    } else {
+      Auth()
+          .login(
+        _emailController.text,
+        _passwordController.text,
+      )
+          .then((FirebaseUser user) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => TodoScreen()),
+          (route) => false,
+        );
+      }).catchError((e) => AppMessage.show(
+              context: context,
+              title: 'Error',
+              description: e.toString(),
+              type: MessageType.error));
+    }
   }
 }

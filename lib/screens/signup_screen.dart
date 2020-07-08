@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+
 import 'package:fluttertodo/constants.dart';
 import 'package:fluttertodo/components/main_button.dart';
+import 'package:fluttertodo/mixins/app_message.dart';
+import 'package:fluttertodo/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'todo_screen.dart';
 
-class SignupScreen extends StatefulWidget {
+class SignupScreen extends StatefulWidget with AppMessage {
   static const String id = 'signup_screen';
   @override
   _SignupScreenState createState() => _SignupScreenState();
@@ -76,13 +80,38 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  void signUp() {
+  void signUp() async {
     print('Email: ${_emailController.text}');
     print('Password: ${_passwordController.text}');
 
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => TodoScreen()),
-      (route) => false,
-    );
+    if (_emailController.text == '') {
+      AppMessage.show(
+          context: context,
+          title: 'Error',
+          description: 'Please enter an email.',
+          type: MessageType.error);
+    } else if (_passwordController.text == '') {
+      AppMessage.show(
+          context: context,
+          title: 'Error',
+          description: 'Please enter a password.',
+          type: MessageType.error);
+    } else {
+      Auth()
+          .signUp(
+        _emailController.text,
+        _passwordController.text,
+      )
+          .then((FirebaseUser user) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => TodoScreen()),
+          (route) => false,
+        );
+      }).catchError((e) => AppMessage.show(
+              context: context,
+              title: 'Error',
+              description: e.toString(),
+              type: MessageType.error));
+    }
   }
 }
