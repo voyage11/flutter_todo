@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertodo/constants.dart';
 import 'package:fluttertodo/components/main_button.dart';
 import 'package:fluttertodo/mixins/app_message.dart';
+import 'package:fluttertodo/screens/todo_screen.dart';
 
 class LoginScreen extends StatefulWidget with AppMessage {
   static const String id = 'login_screen';
@@ -13,6 +14,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode _passwordNode = FocusNode();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    print('LoginScreen dispose');
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +79,15 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void login() {
-    print('Email: ${_emailController.text}');
+    print('login Email: ${_emailController.text}');
     print('Password: ${_passwordController.text}');
-//    AppMessage.show(
-//      context: context,
-//      title: 'Error',
-//      description: 'This is error.',
-//      type: MessageType.error,
-//    );
+//    Provider.of<UserData>(context, listen: false)
+//        .currentUser
+//        .setEmailUid('email', 'uid');
+
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => TodoScreen()),
+      (route) => false,
+    );
   }
 }

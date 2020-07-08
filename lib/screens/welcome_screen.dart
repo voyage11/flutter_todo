@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter/rendering.dart';
 import 'package:fluttertodo/constants.dart';
 import 'package:fluttertodo/components/main_button.dart';
 import 'package:fluttertodo/screens/login_screen.dart';
@@ -12,6 +11,12 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  void dispose() {
+    print('WelcomeScreen dispose');
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +54,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   height: 10,
                 ),
                 MainButton(
-                  title: 'Signup',
+                  title: 'SignUp',
                   onPressed: () {
                     Navigator.pushNamed(context, SignupScreen.id);
                   },

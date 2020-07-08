@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertodo/constants.dart';
 import 'package:fluttertodo/components/main_button.dart';
+import 'todo_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   static const String id = 'signup_screen';
@@ -14,10 +15,16 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    print('SignupScreen dispose');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: Text('SignUp'),
         backgroundColor: kMainBlueColor,
       ),
       body: Container(
@@ -58,7 +65,7 @@ class _SignupScreenState extends State<SignupScreen> {
               height: 80,
             ),
             MainButton(
-              title: 'Login',
+              title: 'SignUp',
               onPressed: () {
                 signUp();
               },
@@ -72,5 +79,10 @@ class _SignupScreenState extends State<SignupScreen> {
   void signUp() {
     print('Email: ${_emailController.text}');
     print('Password: ${_passwordController.text}');
+
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => TodoScreen()),
+      (route) => false,
+    );
   }
 }
