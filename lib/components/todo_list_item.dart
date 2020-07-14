@@ -42,6 +42,7 @@ class TodoListItem extends StatelessWidget {
                   Text(
                     item.description,
                     style: TextStyle(fontSize: 15),
+                    maxLines: 2,
                   ),
                 ],
               ),

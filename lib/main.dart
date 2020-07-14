@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertodo/models/TodoItem.dart';
 import 'package:fluttertodo/models/user_data.dart';
+import 'package:fluttertodo/screens/loading_screen.dart';
 import 'package:fluttertodo/screens/todo_details_screen.dart';
 import 'package:fluttertodo/screens/todo_screen.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +21,9 @@ class TodoApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => UserData(),
       child: MaterialApp(
-        initialRoute: WelcomeScreen.id,
+        initialRoute: LoadingScreen.id,
         routes: {
+          LoadingScreen.id: (context) => LoadingScreen(),
           WelcomeScreen.id: (context) => WelcomeScreen(),
           LoginScreen.id: (context) => LoginScreen(),
           SignupScreen.id: (context) => SignupScreen(),

@@ -46,6 +46,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               children: <Widget>[
                 MainButton(
                   title: 'Login',
+                  type: ButtonType.login,
                   onPressed: () {
                     Navigator.pushNamed(context, LoginScreen.id);
                   },
@@ -55,6 +56,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 MainButton(
                   title: 'SignUp',
+                  type: ButtonType.login,
                   onPressed: () {
                     Navigator.pushNamed(context, SignupScreen.id);
                   },

@@ -8,7 +8,7 @@ import 'package:fluttertodo/components/main_button.dart';
 import 'package:fluttertodo/mixins/app_message.dart';
 import 'package:fluttertodo/screens/todo_screen.dart';
 import 'package:fluttertodo/services/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertodo/services/cache.dart';
 
 class LoginScreen extends StatefulWidget with AppMessage {
   static const String id = 'login_screen';
@@ -52,6 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.emailAddress,
               controller: _emailController,
+              autocorrect: false,
+              enableSuggestions: false,
               onSubmitted: (_) {
                 FocusScope.of(context).requestFocus(_passwordNode);
               },
@@ -64,6 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
               textInputAction: TextInputAction.done,
               focusNode: _passwordNode,
               controller: _passwordController,
+              autocorrect: false,
+              enableSuggestions: false,
               decoration: InputDecoration(
                 labelText: 'Password',
               ),
@@ -76,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             MainButton(
               title: 'Login',
+              type: ButtonType.login,
               onPressed: () {
                 login();
               },
@@ -112,6 +117,9 @@ class _LoginScreenState extends State<LoginScreen> {
         _passwordController.text,
       )
           .then((FirebaseUser user) {
+        print('FirebaseUser: ${user.uid} email: ${user.email}');
+        Cache().setCache(CacheType.uid, user.uid);
+        Cache().setCache(CacheType.email, user.email);
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => TodoScreen()),
           (route) => false,

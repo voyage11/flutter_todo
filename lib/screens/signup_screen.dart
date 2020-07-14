@@ -46,6 +46,8 @@ class _SignupScreenState extends State<SignupScreen> {
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.emailAddress,
               controller: _emailController,
+              autocorrect: false,
+              enableSuggestions: false,
               onSubmitted: (_) {
                 FocusScope.of(context).requestFocus(_passwordNode);
               },
@@ -58,6 +60,8 @@ class _SignupScreenState extends State<SignupScreen> {
               textInputAction: TextInputAction.done,
               focusNode: _passwordNode,
               controller: _passwordController,
+              autocorrect: false,
+              enableSuggestions: false,
               decoration: InputDecoration(
                 labelText: 'Password',
               ),
@@ -70,6 +74,7 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             MainButton(
               title: 'SignUp',
+              type: ButtonType.login,
               onPressed: () {
                 signUp();
               },
