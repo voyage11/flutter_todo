@@ -4,6 +4,7 @@ import 'package:fluttertodo/components/main_button.dart';
 import 'package:fluttertodo/mixins/app_message.dart';
 import 'package:fluttertodo/screens/welcome_screen.dart';
 import 'package:fluttertodo/services/cache.dart';
+import 'package:fluttertodo/services/auth.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const String id = 'profile_screen';
@@ -14,7 +15,9 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> with AppMessage {
   TextEditingController _uidController = TextEditingController(text: '');
   TextEditingController _emailController = TextEditingController(text: '');
-  TextEditingController _firstNameController = TextEditingController(text: '');
+  TextEditingController _displayNameController =
+      TextEditingController(text: '');
+  String _displayName = '';
 
   @override
   void initState() {
@@ -25,12 +28,12 @@ class _ProfileScreenState extends State<ProfileScreen> with AppMessage {
   void getUserData() async {
     var uid = await Cache().getCache(CacheType.uid);
     var email = await Cache().getCache(CacheType.email);
-    var firstName = await Cache().getCache(CacheType.firstName);
+    _displayName = await Cache().getCache(CacheType.displayName);
     //print('future uid: $uid');
     setState(() {
       _uidController = TextEditingController(text: uid);
       _emailController = TextEditingController(text: email);
-      _firstNameController = TextEditingController(text: firstName);
+      _displayNameController = TextEditingController(text: _displayName);
     });
   }
 
@@ -50,12 +53,20 @@ class _ProfileScreenState extends State<ProfileScreen> with AppMessage {
               ),
             ),
             onPressed: () {
-              AppMessage.show(
+              print('first Name: $_displayName');
+              Auth().saveFirstName(_displayName).then((user) {
+                print('save user _displayName: ${user.displayName}');
+                AppMessage.show(
+                    context: context,
+                    title: 'Success',
+                    description: 'Name is saved successfully.',
+                    type: MessageType.success);
+                Navigator.pop(context);
+              }).catchError((e) => AppMessage.show(
                   context: context,
-                  title: 'Success',
-                  description: 'Name is saved successfully.',
-                  type: MessageType.success);
-              Navigator.pop(context);
+                  title: 'Error',
+                  description: e.toString(),
+                  type: MessageType.error));
             },
           ),
         ],
@@ -101,7 +112,12 @@ class _ProfileScreenState extends State<ProfileScreen> with AppMessage {
                     labelText: 'First Name',
                   ),
                   textInputAction: TextInputAction.done,
-                  controller: _firstNameController,
+                  controller: _displayNameController,
+                  onChanged: (displayName) {
+                    setState(() {
+                      _displayName = displayName;
+                    });
+                  },
                 ),
                 SizedBox(
                   height: 10,
@@ -117,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> with AppMessage {
                   onPressed: () {
                     Cache().setCache(CacheType.uid, '');
                     Cache().setCache(CacheType.email, '');
-                    Cache().setCache(CacheType.firstName, '');
+                    Cache().setCache(CacheType.displayName, '');
                     AppMessage.show(
                         context: context,
                         title: 'Success',

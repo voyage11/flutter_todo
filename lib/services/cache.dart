@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum CacheType { uid, email, firstName }
+enum CacheType { uid, email, displayName }
 
 class Cache {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -15,7 +15,7 @@ class Cache {
         return prefs.getString(CacheType.email.toString()) ?? '';
         break;
       default:
-        return prefs.getString(CacheType.firstName.toString()) ?? '';
+        return prefs.getString(CacheType.displayName.toString()) ?? '';
         break;
     }
   }

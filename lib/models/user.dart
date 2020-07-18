@@ -1,16 +1,16 @@
 class User {
   String email;
   String uid;
-  String name;
+  String displayName;
 
-  User({this.email = "", this.uid = "", this.name = ""});
+  User({this.email = "", this.uid = "", this.displayName = ""});
 
   void setEmailUid(String email, String uid) {
     this.email = email;
     this.uid = uid;
   }
 
-  void setName(String name) {
-    this.name = name;
+  void setName(String displayName) {
+    this.displayName = displayName;
   }
 }

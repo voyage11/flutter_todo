@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:fluttertodo/constants.dart';
 import 'package:fluttertodo/components/main_button.dart';
 import 'package:fluttertodo/mixins/app_message.dart';
 import 'package:fluttertodo/screens/todo_screen.dart';
 import 'package:fluttertodo/services/auth.dart';
-import 'package:fluttertodo/services/cache.dart';
 
 class LoginScreen extends StatefulWidget with AppMessage {
   static const String id = 'login_screen';
@@ -117,9 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
         _passwordController.text,
       )
           .then((FirebaseUser user) {
-        print('FirebaseUser: ${user.uid} email: ${user.email}');
-        Cache().setCache(CacheType.uid, user.uid);
-        Cache().setCache(CacheType.email, user.email);
+        print(
+            'FirebaseUser: ${user.uid} email: ${user.email} displayName: ${user.displayName}');
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => TodoScreen()),
           (route) => false,

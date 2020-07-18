@@ -44,14 +44,18 @@ class _AddTodoScreenState extends State<AddTodoScreen> with AppMessage {
                 uid: uid,
                 date: DateTime.now(),
               );
-              var documentId = await FireStore().addTodoItem(newItem);
-              print('documentId Added: $documentId');
-              AppMessage.show(
+              await FireStore().addTodoItem(newItem).then((documentId) {
+                AppMessage.show(
+                    context: context,
+                    title: 'Success',
+                    description: 'The TODO item is added.',
+                    type: MessageType.success);
+                Navigator.pop(context);
+              }).catchError((e) => AppMessage.show(
                   context: context,
-                  title: 'Success',
-                  description: 'The TODO item is added.',
-                  type: MessageType.success);
-              Navigator.pop(context);
+                  title: 'Error',
+                  description: e.toString(),
+                  type: MessageType.error));
             },
           ),
         ],

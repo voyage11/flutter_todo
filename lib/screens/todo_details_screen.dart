@@ -4,6 +4,7 @@ import 'package:fluttertodo/components/main_button.dart';
 import 'package:fluttertodo/models/TodoItem.dart';
 import 'package:intl/intl.dart';
 import 'package:fluttertodo/mixins/app_message.dart';
+import 'package:fluttertodo/services/firestore.dart';
 
 class TodoDetailsScreen extends StatefulWidget {
   static const String id = 'todo_details_screen';
@@ -59,13 +60,24 @@ class _TodoDetailsScreenState extends State<TodoDetailsScreen> with AppMessage {
                 MainButton(
                   title: 'Mark as Complete',
                   type: ButtonType.complete,
-                  onPressed: () {
-                    AppMessage.show(
-                        context: context,
-                        title: 'Success',
-                        description: 'The TODO item is completed.',
-                        type: MessageType.success);
-                    Navigator.pop(context);
+                  onPressed: () async {
+                    String documentId = item.id;
+                    await FireStore().deleteTodoItem(documentId, (message) {
+                      if (message == 'success') {
+                        AppMessage.show(
+                            context: context,
+                            title: 'Success',
+                            description: 'The TODO item is completed.',
+                            type: MessageType.success);
+                        Navigator.pop(context);
+                      } else {
+                        AppMessage.show(
+                            context: context,
+                            title: 'Error',
+                            description: message,
+                            type: MessageType.error);
+                      }
+                    });
                   },
                 ),
                 SizedBox(
